@@ -1,6 +1,6 @@
 //Blogging App using Hooks
 import React, { useState, useRef, useEffect } from "react";
-import { collection, addDoc, getDocs, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, getDocs, onSnapshot, deleteDoc , doc } from "firebase/firestore";
 import db from "../firebaseInit";
 
 export default function Blog() {
@@ -64,8 +64,10 @@ export default function Blog() {
 
     titleRef.current.focus();
   }
-  function deleteBlog(i) {
-    setBlogs(blogs.filter((blog, index) => index !== i));
+  async function deleteBlog(id) {
+    // setBlogs(blogs.filter((blog, index) => index !== i));
+    const docRef = doc(db , 'Blogs' , id)
+    await deleteDoc(docRef)
 
     titleRef.current.focus();
   }
@@ -125,7 +127,7 @@ export default function Blog() {
             <button className="btn" onClick={() => editBlog(i)}>
               EDIT
             </button>
-            <button className="btn remove" onClick={() => deleteBlog(i)}>
+            <button className="btn remove" onClick={() => deleteBlog(blog.id)}>
               DELETE
             </button>
           </div>
